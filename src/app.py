@@ -6,10 +6,15 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db
+from api.models import db, User
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # from models import Person
 
@@ -36,6 +41,10 @@ setup_admin(app)
 
 # add the admin
 setup_commands(app)
+
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = "FS_4Geeks-2024__BOOTCAMP"  # Change this!
+jwt = JWTManager(app)
 
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
@@ -66,6 +75,63 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
+
+
+
+# CREATING A TOKEN
+@app.route("/login", methods=["POST"])
+def handle_login():
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+
+    user = User.query.filter_by(email=email).first()
+    
+    if user is None or user.password != password:
+        return jsonify({"msg": "Email or password incorrect"}), 401
+
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token=access_token)
+
+# USING THE TOKEN
+@app.route("/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    # Access the identity of the current user with get_jwt_identity
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
+    # if the return above is not working, try with this:
+    # return jsonify(
+        #     id=current_user.id,
+        #     email=current_user.email
+        # )
+
+
+
+@app.route("/signup", methods=["POST"])
+def handle_signup():
+
+    print("hello")
+    body = request.get_json()
+    print(body)
+    
+    existing_user = User.query.filter_by(email=body["email"]).first()
+    if existing_user:
+        return ("ERROR: incorrect user or password")
+    
+    hashed_password = generate_password_hash(body['password'], method='sha256')
+
+    new_user = User(
+        email=body['email'],
+        password=hashed_password,
+        is_active=True
+    )
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({"message": "User created successfully!"}), 201
+
+
 
 
 # this only runs if `$ python src/main.py` is executed
