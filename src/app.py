@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
-from flask import Flask, request, jsonify, url_for, send_from_directory
+from flask import Flask, flash, redirect, session, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
@@ -83,9 +83,8 @@ def serve_any_other_file(path):
 def handle_login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
+    user = User.query.filter_by(email=email).first()   
 
-    user = User.query.filter_by(email=email).first()
-    
     if user is None or user.password != password:
         return jsonify({"msg": "Email or password incorrect"}), 401
 
@@ -105,26 +104,33 @@ def protected():
         #     email=current_user.email
         # )
 
+@app.route("/logout", methods=["POST"])
+def handle_logout():
+    # Clear the session
+    session.pop('user_id', None)  # Replace 'user_id' with your session key
+    flash("Successfully logged out")
+    return redirect(url_for('login'))  # Redirect to the login page
 
 
 @app.route("/signup", methods=["POST"])
 def handle_signup():
 
-    print("hello")
     body = request.get_json()
-    print(body)
     
     existing_user = User.query.filter_by(email=body["email"]).first()
     if existing_user:
         return ("ERROR: incorrect user or password")
     
-    hashed_password = generate_password_hash(body['password'], method='sha256')
+    hashed_password = generate_password_hash(body['password'], method='pbkdf2:sha256')
 
     new_user = User(
         email=body['email'],
         password=hashed_password,
         is_active=True
     )
+
+    if len(body['email']) > 255:
+        return jsonify({"ERROR": "Email exceeds maximum length of 255 characters."}), 400
 
     db.session.add(new_user)
     db.session.commit()
