@@ -13,14 +13,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			users: []
 		},
 		actions: {
+			addUser: async () => {
+				try{
+					// fetching data from the backend
+					const resp = await fetch(process.env.BACKEND_URL + "/app/signup")
+					const data = await resp.json()
+					setStore({ users: data })
+					// don't forget to return something, that is how the async resolves
+					return data;
+				}catch(error){
+					console.error("Error loading message from backend", error)
+				}
+			},
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
-
+			
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
