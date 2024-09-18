@@ -11,11 +11,11 @@ export const Login = () => {
         <h1>LOGIN YOUR USER</h1>
         <div className="form-floating col-auto mb-3">
             <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com"/>
-            <label for="floatingInput">Email address</label>
+            <label htmlFor="floatingInput">Email address</label>
         </div>
         <div className="form-floating col-auto">
             <input type="password" className="form-control" id="floatingPassword" placeholder="Password"/>
-            <label for="floatingPassword">Password</label>
+            <label htmlFor="floatingPassword">Password</label>
         </div>
         <button type="submit" className="btn btn-primary mb-5">Access for VIP people</button>
     </div>

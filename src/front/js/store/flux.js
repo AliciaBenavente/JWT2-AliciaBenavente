@@ -17,17 +17,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 			users: []
 		},
 		actions: {
-			addUser: async () => {
-				try{
-					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/app/signup")
-					const data = await resp.json()
-					setStore({ users: data })
-					// don't forget to return something, that is how the async resolves
-					return data;
-				}catch(error){
-					console.error("Error loading message from backend", error)
-				}
+			userSignup: async (formData) => {
+				try {
+					const store = getStore();
+
+					const resp = await fetch(process.env.BACKEND_URL + "/signup", {
+                        method: 'POST',
+						// mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+							// "Accept": "application/json",
+                        },
+                        body: JSON.stringify(formData),
+                    });
+					console.log(resp);
+					
+					const text = await resp.text()
+					console.log(text);
+					if (resp.ok) {
+						const data = JSON.parse(text)
+						setStore({ users: [...store.users], data })
+						console.log(users)
+						console.log(data);
+						
+					} else {
+						console.error("Error during signup:", error)
+                    }
+					} catch (error) {
+						console.error("Error during signup:", error);
+					}
+			},
+			userLogin: () => {
+				setStore ({ isLoggedIn: true})
 			},
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
