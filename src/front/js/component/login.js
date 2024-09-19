@@ -1,23 +1,59 @@
-import React, { Component } from "react";
-import { useState } from "react";
+import React, { Component, useState, useContext } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 export const Login = () => {
-    const handleSubmit = () => {
+    const { store, actions } = useContext(Context);
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("")
 
+    const navigate = useNavigate();
+
+    function handleSubmit (event) {
+        event.preventDefault()
+
+        if (!email || !password) {
+            console.log("Input is empty")
+            return alert("All inputs should be filled");
+        }
+        else if (!email.includes("@")) {
+            return alert("Email should have @ symbol")
+        }
+        else console.log("Everything looks fine");
+
+
+        actions.userLogin(email, password)
+        // navigate("/api/private")
     }
 
     return (
-    <div className="container col-6 mt-5" onSubmit={() => handleSubmit}>
-        <h1>LOGIN YOUR USER</h1>
-        <div className="form-floating col-auto mb-3">
-            <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com"/>
-            <label htmlFor="floatingInput">Email address</label>
-        </div>
-        <div className="form-floating col-auto">
-            <input type="password" className="form-control" id="floatingPassword" placeholder="Password"/>
-            <label htmlFor="floatingPassword">Password</label>
-        </div>
-        <button type="submit" className="btn btn-primary mb-5">Access for VIP people</button>
-    </div>
+        <>
+        {store.isLoggedIn === true ? <Navigate to="/api/private"/> :
+        <div className="container col-6 mt-5" onSubmit={handleSubmit}>
+        <h1 className="text-center">LOGIN YOUR USER</h1>
+                <form>
+                <div className="form-floating col-auto mb-3">
+                    <input type="email" 
+                    className="form-control"
+                    id="floatingInput"
+                    placeholder="name@example.com"
+                    value={email}
+                    onChange={(e)=> setEmail(e.target.value)}/>
+                    <label htmlFor="floatingInput">Email address</label>
+                </div>
+                <div className="form-floating col-auto">
+                    <input type="password"
+                    className="form-control"
+                    id="floatingPassword"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e)=> setPassword(e.target.value)}/>
+                    <label htmlFor="floatingPassword">Password</label>
+                </div>
+                <button type="submit" className="btn btn-primary mb-5">Access for VIP people</button>
+            </form>
+            </div>
+        }
+    </>
 );
 }

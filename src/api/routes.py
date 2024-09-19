@@ -33,45 +33,40 @@ def handle_hello():
 
 # CREATING A TOKEN
 @api.route("/login", methods=["POST"])
-def handle_login():
+def login():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    user = User.query.filter_by(email=email).first()   
+    user = User.query.filter_by(email=email).first() 
     print(email)
     print(password)
     print(user)
     if user is None or user.password != password:
+        print("Email or password incorrect")
         return jsonify({"msg": "Email or password incorrect"}), 401
 
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token)
 
-# USING THE TOKEN
+
+# Protect a route with jwt_required, which will kick out requests
+# without a valid JWT present.
 @api.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():
     # Access the identity of the current user with get_jwt_identity
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
-    # if the return above is not working, try with this:
-    # return jsonify(
-        #     id=current_user.id,
-        #     email=current_user.email
-        # )
 
-@api.route("/logout", methods=["POST"])
-def handle_logout():
-    # Clear the session
-    session.pop('user_id', None)  # Replace 'user_id' with your session key
-    flash("Successfully logged out")
-    return redirect(url_for('login'))  # Redirect to the login page
+# # @api.route("/logout", methods=["POST"])
+# # def handle_logout():
+    
 
 
 @api.route("/signup", methods=["POST"])
 def handle_signup():
 
     body = request.get_json()
-    print(body)
+    
     existing_user = User.query.filter_by(email=body["email"]).first()
     if existing_user:
         return ("ERROR: incorrect user or password")
