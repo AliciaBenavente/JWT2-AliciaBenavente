@@ -1,6 +1,7 @@
-import React, { Component, useState, useContext } from "react";
+import React, { Component, useState, useContext, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
 
 export const Login = () => {
     const { store, actions } = useContext(Context);
@@ -23,14 +24,16 @@ export const Login = () => {
 
 
         actions.userLogin(email, password)
-        // navigate("/api/private")
+        navigate("/api/private")
     }
 
     return (
         <>
         {store.isLoggedIn === true ? <Navigate to="/api/private"/> :
         <div className="container col-6 mt-5" onSubmit={handleSubmit}>
-        <h1 className="text-center">LOGIN YOUR USER</h1>
+        <h1 className="text-center">LOGIN YOUR USER or <Link to="/">
+					<span className="navbar-brand mb-0 h1">go back home</span>
+				</Link></h1>
                 <form>
                 <div className="form-floating col-auto mb-3">
                     <input type="email" 

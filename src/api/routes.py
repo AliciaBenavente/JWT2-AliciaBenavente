@@ -40,10 +40,13 @@ def login():
     print(email)
     print(password)
     print(user)
-    if user is None or user.password != password:
-        print("Email or password incorrect")
-        return jsonify({"msg": "Email or password incorrect"}), 401
-
+    if user is None:
+        print("Email incorrect")
+        return jsonify({"msg": "Email  incorrect"}), 401
+    if user.password != password:
+        print("password incorrect")
+        return jsonify({"msg": "password incorrect"}), 401
+    print(user)
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token)
 
@@ -75,13 +78,13 @@ def handle_signup():
 
     new_user = User(
         email=body['email'],
-        password=hashed_password,
+        password=body['password'],
         is_active=True
     )
     print((new_user))
     if len(body['email']) > 255:
         return jsonify({"ERROR": "Email exceeds maximum length of 255 characters."}), 400
-
+    
     db.session.add(new_user)
     db.session.commit()
 
