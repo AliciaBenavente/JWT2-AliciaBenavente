@@ -5,3 +5,258 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+h1 {
+    -webkit-tap-highlight-color: transparent;
+    color: #042427;
+    font-size: 40px;
+    line-height: 1.5;
+    margin: 0;
+    padding: 2;
+  }
+
+.signup,
+.signup *,
+.signup :after,
+.signup :before,
+.signup:after,
+.signup:before {
+  border: none;
+  box-sizing: border-box;
+}
+
+.signup {
+  scale: 0.8;
+  -webkit-tap-highlight-color: transparent;
+  background-color: #000000;
+  background-image: none;
+  color: #fff;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    Segoe UI,
+    Roboto,
+    Helvetica Neue,
+    Arial,
+    Noto Sans,
+    sans-serif,
+    Apple Color Emoji,
+    Segoe UI Emoji,
+    Segoe UI Symbol,
+    Noto Color Emoji;
+  cursor: pointer;
+  font-size: 100%;
+  line-height: 1.5;
+  margin: 0;
+  padding: 2;
+}
+
+.signup:disabled {
+  cursor: default;
+}
+
+.signup:-moz-focusring {
+  outline: auto;
+}
+
+.signup svg {
+  display: block;
+  vertical-align: middle;
+}
+
+.signup [hidden] {
+  display: none;
+}
+
+.signup {
+  border: 1px solid;
+  border-radius: 999px;
+  box-sizing: border-box;
+  display: block;
+  font-weight: 900;
+  overflow: hidden;
+  padding: 1.2rem 3rem;
+  position: relative;
+  text-transform: uppercase;
+}
+
+.signup .original {
+  background: #007c3a;
+  color: #fefefe;
+  display: grid;
+  inset: 0;
+  place-content: center;
+  position: absolute;
+  transition: transform 0.3s cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.signup:hover .original {
+  transform: translateY(100%);
+}
+
+.signup .letters {
+  display: inline-flex;
+}
+
+.signup span {
+  opacity: 0;
+  transform: translateY(-15px);
+  transition:
+    transform 0.3s cubic-bezier(0.87, 0, 0.13, 1),
+    opacity 0.3s;
+}
+
+.signup span:nth-child(2n) {
+  transform: translateY(15px);
+}
+
+.signup:hover span {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.signup:hover span:nth-child(2) {
+  transition-delay: 0.1s;
+}
+
+.signup:hover span:nth-child(3) {
+  transition-delay: 0.2s;
+}
+
+.signup:hover span:nth-child(4) {
+  transition-delay: 0.3s;
+}
+
+.signup:hover span:nth-child(5) {
+  transition-delay: 0.4s;
+}
+
+.signup:hover span:nth-child(6) {
+  transition-delay: 0.5s;
+}
+
+
+
+
+.login,
+.login *,
+.login :after,
+.login :before,
+.login:after,
+.login:before {
+  border: none;
+  box-sizing: border-box;
+}
+
+.login {
+  scale: 0.8;
+  -webkit-tap-highlight-color: transparent;
+  background-color: #ffffff;
+  background-image: none;
+  color: #000000;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    Segoe UI,
+    Roboto,
+    Helvetica Neue,
+    Arial,
+    Noto Sans,
+    sans-serif,
+    Apple Color Emoji,
+    Segoe UI Emoji,
+    Segoe UI Symbol,
+    Noto Color Emoji;
+  cursor: pointer;
+  font-size: 100%;
+  line-height: 1.5;
+  margin: 0;
+  padding: 2;
+}
+
+.login:disabled {
+  cursor: default;
+}
+
+.login:-moz-focusring {
+  outline: auto;
+}
+
+.login svg {
+  display: block;
+  vertical-align: middle;
+}
+
+.login [hidden] {
+  display: none;
+}
+
+.login {
+  border: 1px solid;
+  border-radius: 999px;
+  box-sizing: border-box;
+  display: block;
+  font-weight: 900;
+  overflow: hidden;
+  padding: 1.2rem 3rem;
+  position: relative;
+  text-transform: uppercase;
+}
+
+.login .original {
+  background: #004387;
+  color: #fefefe;
+  display: grid;
+  inset: 0;
+  place-content: center;
+  position: absolute;
+  transition: transform 0.3s cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.login:hover .original {
+  transform: translateY(100%);
+}
+
+.login .letters {
+  display: inline-flex;
+}
+
+.login span {
+  opacity: 0;
+  transform: translateY(-15px);
+  transition:
+    transform 0.3s cubic-bezier(0.87, 0, 0.13, 1),
+    opacity 0.3s;
+}
+
+.login span:nth-child(2n) {
+  transform: translateY(15px);
+}
+
+.login:hover span {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.login:hover span:nth-child(2) {
+  transition-delay: 0.1s;
+}
+
+.login:hover span:nth-child(3) {
+  transition-delay: 0.2s;
+}
+
+.login:hover span:nth-child(4) {
+  transition-delay: 0.3s;
+}
+
+.login:hover span:nth-child(5) {
+  transition-delay: 0.4s;
+}
+
+.login:hover span:nth-child(6) {
+  transition-delay: 0.5s;
+}

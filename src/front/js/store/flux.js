@@ -18,35 +18,36 @@ const getState = ({ getStore, getActions, setStore }) => {
 			isLoggedIn: false,
 		},
 		actions: {
-
-			userSignup: async (email, password) => {
-				try {
-					const store = getStore();
-
-					const response = await fetch(process.env.BACKEND_URL + "/api/signup", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(email, password),
-                    });
-					console.log(resp);
-					
-					const data = await response.json()
-					console.log(data);
-					if (response.ok) {
-						setStore({ users: [...store.users], data })
-						console.log("User", users)
-						console.log(data);
-						return data
-					} else {
-						console.error("Error during signup:", error)
-						return ("Error from signup in flux")
-                    }
-					} catch (error) {
-						console.error("Error during signup:", error);
-					}
-			},
+			userSignup: (email, password)=> {
+				const requestOptions = {
+				    method: "POST",
+				    headers: {"Content-Type": "application/json"},
+				    body: JSON.stringify({
+				        "email": email,
+				        "password": password
+				        }),
+				  };
+				  
+				  fetch(process.env.BACKEND_URL + "/api/signup", requestOptions)
+				    .then((response) =>{
+						console.log(response)
+						return response.json()
+					})
+				    .then((data) => {
+						console.log(data)
+						console.log(data.status);
+						if(data.status === 200){
+							setStore({ users: [...store.users], data })
+							console.log("User", users)
+							console.log(data);
+							return data
+						} else {
+							console.error("Error during signup:", error)
+							return ("Error from signup in flux")
+						}
+					})
+				    .catch((error) => console.error("Error during signup:", error))
+				},
 
 			userLogin: (email, password) => {
 					const requestOptions = {
@@ -68,12 +69,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 						)
 						.then((data) =>
-							localStorage.setItem("TK", data.access_token),
+							localStorage.setItem("token", data.access_token),
 						)
 						.catch((error) => console.error("Error", error));
-				
 			},
 
+			userLogout: () => {
+				setStore ({ isLoggedIn: false})
+				localStorage.removeItem("token");
+			},
 
 
 			// Use getActions to call a function within a fuction
