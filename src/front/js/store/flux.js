@@ -13,14 +13,74 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			users: [],
+			isLoggedIn: false,
 		},
 		actions: {
+
+			userSignup: async (email, password) => {
+				try {
+					const store = getStore();
+
+					const response = await fetch(process.env.BACKEND_URL + "/api/signup", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(email, password),
+                    });
+					console.log(resp);
+					
+					const data = await response.json()
+					console.log(data);
+					if (response.ok) {
+						setStore({ users: [...store.users], data })
+						console.log("User", users)
+						console.log(data);
+						return data
+					} else {
+						console.error("Error during signup:", error)
+						return ("Error from signup in flux")
+                    }
+					} catch (error) {
+						console.error("Error during signup:", error);
+					}
+			},
+
+			userLogin: (email, password) => {
+					const requestOptions = {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							"email": email,
+							"password": password
+							}),
+					  };
+					  
+					  fetch(process.env.BACKEND_URL + "/api/login", requestOptions)
+						.then((response) => {
+							console.log(response.status)
+							if (response.status === 200) {
+								setStore ({ isLoggedIn: true})
+							}
+							return response.json()
+						}
+						)
+						.then((data) =>
+							localStorage.setItem("TK", data.access_token),
+						)
+						.catch((error) => console.error("Error", error));
+				
+			},
+
+
+
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
-
+			
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
