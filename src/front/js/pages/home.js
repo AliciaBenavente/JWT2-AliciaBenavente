@@ -1,15 +1,13 @@
-import React, { useContext } from "react";
-import { Context } from "../store/appContext";
+import React from "react";
 import { Link } from "react-router-dom";
 import "../../styles/home.css";
 
 export const Home = () => {
-	const { store, actions } = useContext(Context);
 
 	return (
-		<div className="text-center mt-5">
+		<div className="text-center container mt-5">
 			<h1 className="mb-5">It's good to have you here! What would you like to do?</h1>
-			<div className="container d-flex justify-content-evenly">
+			<div className="d-flex justify-content-evenly">
 			<Link to="/api/signup">
 				<button className="signup">
 					<div className="original">Signup</div>
