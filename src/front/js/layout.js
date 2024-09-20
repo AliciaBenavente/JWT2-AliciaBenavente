@@ -4,8 +4,8 @@ import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
 import { Home } from "./pages/home";
-import { Demo } from "./pages/demo";
-import { Single } from "./pages/single";
+// import { Demo } from "./pages/demo";
+// import { Single } from "./pages/single";
 import { Signup } from "./component/signup";
 import { Login } from "./component/login";
 import { Private } from "./component/private";

@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
@@ -17,12 +16,14 @@ export const Navbar = () => {
 
 	return (
 		<nav className="navbar navbar-light bg-light">
-			<div className="container text-center">
+			<div className="container-fluid">
 				{store.isLoggedIn === true ? 
-						<button className="btn btn-danger"
+				<div className="d-flex justify-content-end w-100">
+						<button className="btn btn-danger float-end"
 						onClick={handleLogout}>
 							Log out
 						</button>
+				</div>
 				 : ""		
 				} 
 			</div>

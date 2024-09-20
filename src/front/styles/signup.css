@@ -1,0 +1,79 @@
+.form1 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 1em;
+    background-color: #134848;
+    border-radius: 25px;
+    transition: .4s ease-in-out;
+    max-width: 60%;
+    margin-left: 15%;
+  }
+  
+  .form1:hover {
+    transform: scale(1.05);
+    border: 1px solid black;
+  }
+  
+  #heading1 {
+    text-align: center;
+    margin: 2em;
+    color: rgb(255, 255, 255);
+    font-size: 1.2em;
+  }
+  
+  .field1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    border-radius: 25px;
+    padding: 0.6em;
+    border: none;
+    outline: none;
+    color: rgb(7, 7, 7);
+    background-color: #60aaa8;
+    box-shadow: inset 2px 5px 10px #305554;
+  }
+  
+  .input-icon1 {
+    height: 1.3em;
+    width: 1.3em;
+    fill: rgb(8, 8, 8);
+  }
+  
+  .input-field1 {
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    color: #000000;
+  }
+  
+  .form1 .btn1 {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 2.5em;
+  }
+  
+  .button {
+    padding: 0.5em;
+    padding-left: 1.1em;
+    padding-right: 1.1em;
+    border-radius: 5px;
+    margin-right: 0.5em;
+    border: none;
+    outline: none;
+    transition: .4s ease-in-out;
+    background-color: #1b706d;
+    color: white;
+  }
+  
+  .button:hover {
+    background-color: #052e2c;
+    color: white;
+  }
+  
