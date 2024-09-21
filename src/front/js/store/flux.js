@@ -19,6 +19,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 		actions: {
 			userSignup: (email, password)=> {
+				const store = getStore();
 				const requestOptions = {
 				    method: "POST",
 				    headers: {"Content-Type": "application/json"},
@@ -30,22 +31,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  
 				  fetch(process.env.BACKEND_URL + "/api/signup", requestOptions)
 				    .then((response) =>{
-						console.log(response)
-						return response.json()
-					})
-				    .then((data) => {
-						console.log(data)
-						console.log(data.status);
-						if(data.status === 200){
-							setStore({ users: [...store.users], data })
-							console.log("User", users)
-							console.log(data);
-							return data
-						} else {
-							console.error("Error during signup:", error)
-							return ("Error from signup in flux")
-						}
-					})
+						console.log(response.status)
+
+							if (response.status === 200) {
+								const store = getStore();
+								const newUser = { email, password };
+								setStore({
+									users: [...store.users, newUser],
+								});
+							}
+							return response.json()
+						})
+						.then(data => {
+							console.log(data)
+						})
+					
 				    .catch((error) => console.error("Error during signup:", error))
 				},
 
@@ -79,6 +79,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.removeItem("token");
 			},
 
+			checkUserExists: (email) => {
+				return fetch(process.env.BACKEND_URL + "/api/checkUser", {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json;charset=UTF-8'
+					},
+					body: JSON.stringify({ email })
+				})
+				.then(response => response.json())
+				.then(data => data.exists);
+			},
 
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {

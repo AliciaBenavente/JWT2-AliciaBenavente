@@ -1,5 +1,5 @@
 import React, { Component, useState, useContext, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/login.css";
@@ -10,6 +10,8 @@ export const Login = () => {
     const [ password, setPassword ] = useState("")
     const [ showEmptyInputs, setShowEmptyInputs ] = useState(false)
     const [ showAt, setShowAt ] = useState(false)
+
+    const navigate = useNavigate()
     // At = @
 
 
@@ -31,7 +33,8 @@ export const Login = () => {
 
 
         actions.userLogin(email, password)
-        return <Navigate to="/api/private" />
+        // navigate("/api/private")
+        // return <Navigate to="/api/private" />
     }
 
     return (
