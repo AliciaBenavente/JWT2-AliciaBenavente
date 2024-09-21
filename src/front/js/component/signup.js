@@ -10,11 +10,14 @@ export const Signup = () => {
     const [ password, setPassword ] = useState("")
     const [ showEmptyInputs, setShowEmptyInputs ] = useState(false)
     const [ showAt, setShowAt ] = useState(false)
+    const [ showSuccessMessage, setShowSuccessMessage ] = useState(false)
+    const [ showExists, setShowExists] = useState(false)
+    
     // At = @
 
-    const { actions } = useContext(Context)
+    
+    const { store, actions } = useContext(Context)
     const navigate = useNavigate();
-
     
 
     function handleSubmit (event) {
@@ -24,24 +27,35 @@ export const Signup = () => {
             console.log("Input is empty")
             setShowEmptyInputs(true)
             return;
-            // return alert("All inputs should be filled");
         }
         else if (!email.includes("@")) {
             setShowAt(true)
             return;
-            // return alert("Email should have @ symbol")
         }
-        else console.log("Everything looks fine");
 
-
-        actions.userSignup(email, password)
-        // store.isLoggedIn === true
-        navigate("/api/login")
+        actions.checkUserExists(email).then(userExists => {
+            if (userExists) {
+                setShowExists(true)
+                return;
+            }
+            actions.userSignup(email, password);
+            setShowSuccessMessage(true);
+            // console.log("navigated to login")
+            setTimeout(() => {
+                navigate("/api/login");
+            }, 3000);
+        });
     }
 
     
     return (
     <div className="container col-6 mt-5">
+        {showSuccessMessage &&
+        <div className="alert alert-success">Signup successful! Redirecting to Login!
+            <span className="spinner-border spinner-border-sm ms-3" aria-hidden="true"></span>
+            <span className="visually-hidden" role="status">Loading...</span>
+        </div>
+        }
         <h1 className="text-center">SING UP NEW USER or <Link to="/">
 					<span className="navbar-brand mb-0 h1">go back home</span>
 				</Link></h1>
@@ -51,6 +65,12 @@ export const Signup = () => {
             <div className="alert alert-warning alert-dismissible fade show text-center" role="alert">
                 All inputs should be filled.
                 <button type="button" onClick={()=>setShowEmptyInputs(false)} className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            }
+            {showExists &&
+            <div className="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                Email or password incorrect.
+                <button type="button" onClick={()=>setShowExists(false)} className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             }
             {showAt &&

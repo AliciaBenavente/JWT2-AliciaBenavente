@@ -5,7 +5,7 @@ import "../../styles/home.css";
 export const Home = () => {
 
 	return (
-		<div className="text-center container mt-5">
+		<div className="text-center container mt-5 " id="home">
 			<h1 className="mb-5">It's good to have you here! What would you like to do?</h1>
 			<div className="d-flex justify-content-evenly">
 			<Link to="/api/signup">

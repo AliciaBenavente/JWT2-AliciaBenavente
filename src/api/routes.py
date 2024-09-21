@@ -59,33 +59,47 @@ def protected():
     # Access the identity of the current user with get_jwt_identity
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
-
-# # @api.route("/logout", methods=["POST"])
-# # def handle_logout():
     
 
 
 @api.route("/signup", methods=["POST"])
 def handle_signup():
 
-    body = request.get_json()
-    
-    existing_user = User.query.filter_by(email=body["email"]).first()
+    email = request.json['email']
+    password = request.json['password']
+
+
+    existing_user = User.query.filter_by(email=email).first()
     if existing_user:
-        return ("ERROR: incorrect user or password")
+        return ("ERROR: incorrect user or password"), 400
     print(existing_user)
-    hashed_password = generate_password_hash(body['password'], method='pbkdf2:sha256')
+    hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
     new_user = User(
-        email=body['email'],
-        password=body['password'],
+        email=email,
+        password=password,
         is_active=True
     )
     print((new_user))
-    if len(body['email']) > 255:
+    if len(email) > 255:
         return jsonify({"ERROR": "Email exceeds maximum length of 255 characters."}), 400
     
     db.session.add(new_user)
     db.session.commit()
 
     return jsonify({"message": "User created successfully!"}), 201
+
+
+@api.route('/checkUser', methods=['POST'])
+def check_user_exists():
+    email = request.json.get('email')
+
+    if not email:
+        return jsonify(message="Email is required"), 400
+
+    if email:
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            return jsonify(exists=True, message="Email already exists"), 200
+
+    return jsonify(exists=False), 200
